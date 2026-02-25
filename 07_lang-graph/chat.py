@@ -54,3 +54,16 @@ graph_builder.add_edge("chatbot", "sentiment")
 graph_builder.add_edge("sentiment", END)
 
 
+# 7️⃣ Compile Graph
+graph = graph_builder.compile()
+
+
+# 8️⃣ Run Graph
+initial_state = {
+    "messages": [HumanMessage(content="I am very happy today!")]
+}
+
+result = graph.invoke(initial_state)
+
+for msg in result["messages"]:
+    print(msg.content)
