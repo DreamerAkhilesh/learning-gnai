@@ -12,6 +12,8 @@ class State(TypedDict):
 
 graph_builder = StateGraph(State) 
 
+
+# we can create multiple nodes and add to the graph buider later we can connect these using the edges
 def chatbot (state : State) :
     return {"message" : ["Hi! This is a message from chatbot"]} 
     # will take the previous state
