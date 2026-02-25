@@ -1,22 +1,25 @@
-# langraph has three major components : node, edges and state
-# first lets create a state
-
 from typing_extensions import TypedDict
 from typing import Annotated
+from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
-from langgraph.graph import StateGraph
+from langchain_core.messages import HumanMessage, AIMessage
 
 class State(TypedDict):
-    messages : Annotated[list, add_messages]
+    messages: Annotated[list, add_messages]
 
 
-graph_builder = StateGraph(State) 
+graph_builder = StateGraph(State)
+
+def chatbot(state: State) -> State:
+    return {
+        "messages": [
+            AIMessage(content="Hi! This is a message from chatbot")
+        ]
+    }
 
 
-# we can create multiple nodes and add to the graph buider later we can connect these using the edges
-def chatbot (state : State) :
-    return {"messages" : ["Hi! This is a message from chatbot"]} 
-    # will take the previous state
-    # will get appended the messages to the previous state
+graph_builder.add_node("chatbot", chatbot)
 
-graph_builder.add_node("Chat-bot", chatbot)
+
+graph_builder.add_edge(START, "chatbot")
+graph_builder.add_edge("chatbot", END)
